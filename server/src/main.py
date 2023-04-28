@@ -1,10 +1,20 @@
 import json
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import time
 
 # Initialize FastAPI
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Create a Pydantic model to extract the request body which contains a question
@@ -13,7 +23,7 @@ class Question(BaseModel):
 
 
 # Define a POST endpoint to receive a question and return the respective answer
-@app.post("/ask-question/")
+@app.post("/ask-question")
 async def ask_question(question: Question):
     # Extract the question from the request body
     question = question.question
@@ -35,8 +45,14 @@ async def ask_question(question: Question):
 
             # Define a generator function to stream the answer
             async def answer_generator():
-                yield answer
+                for word in answer.split():
+                    yield word
+                    time.sleep(0.25)
 
-            return StreamingResponse(answer_generator())
+            try:
+                return StreamingResponse(answer_generator())
 
-    return {"Sorry, I don't have the answer for that question."}
+            except Exception as e:
+                print(e)
+
+    return "Sorry, I don't have the answer for that question."
