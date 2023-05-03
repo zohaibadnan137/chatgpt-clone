@@ -5,14 +5,17 @@ import { useState } from "react";
 const API_URL = "http://localhost:8000/ask-question";
 
 function App() {
+  // State variables to store the question and answer respectively
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
+  // Function to handle the form submission
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the page from reloading
-    setAnswer("Thinking...");
+    setAnswer("Thinking..."); // This is a temporary placeholder
 
     try {
+      // Send the request to the server's endpoint
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -24,18 +27,23 @@ function App() {
         }),
       });
 
+      // Reset the answer
       setAnswer("");
 
+      // Read the response from the server
       const reader = response.body.getReader();
       let words = [];
 
       while (true) {
+        // Read the next chunk from the response stream
         const { done, value } = await reader.read();
         if (done) break;
+
+        console.log(new TextDecoder().decode(value));
+
+        // Add the chunk to the words array
         words.push(value);
-        setAnswer(
-          words.map((word) => new TextDecoder().decode(word)).join(" ")
-        );
+        setAnswer(words.map((word) => new TextDecoder().decode(word)));
       }
     } catch (error) {
       console.log(error);
@@ -80,7 +88,9 @@ function App() {
 
                       {answer && (
                         <div className="message is-primary">
-                          <div className="message-body">{answer}</div>
+                          <div className="message-body has-text-left">
+                            {answer}
+                          </div>
                         </div>
                       )}
                     </div>

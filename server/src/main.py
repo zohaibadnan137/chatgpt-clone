@@ -38,21 +38,26 @@ async def ask_question(question: Question):
     # Extract the keys from the appendix
     keys = list(appendix.keys())
 
+    # Set a default answer
+    answer = "Sorry, I don't have the answer for that question."
+
     # Iterate through the keys and check if the question exists
     for key in keys:
         if key.lower() == question:
             answer = appendix[key]
 
-            # Define a generator function to stream the answer
-            async def answer_generator():
-                for word in answer.split():
-                    yield word
-                    time.sleep(0.25)
+    # Define a generator function to stream the answer
+    async def answer_generator():
+        for word in answer.split():
+            yield word + " "
+            time.sleep(0.25)
 
-            try:
-                return StreamingResponse(answer_generator())
+    # Return the answer
+    try:
+        return StreamingResponse(answer_generator())
 
-            except Exception as e:
-                print(e)
+    except Exception as e:
+        print(e)
 
-    return "Sorry, I don't have the answer for that question."
+    finally:
+        pass
