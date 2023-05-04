@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import time
+import asyncio
 
 # Initialize FastAPI
 app = FastAPI()
@@ -50,7 +50,7 @@ async def ask_question(question: Question):
     async def answer_generator():
         for word in answer.split():
             yield word + " "
-            time.sleep(0.25)
+            await asyncio.sleep(0.25)
 
     # Return the answer
     try:
