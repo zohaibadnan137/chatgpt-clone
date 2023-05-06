@@ -8,11 +8,13 @@ function App() {
   // State variables to store the question and answer respectively
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Function to handle the form submission
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the page from reloading
     setAnswer("Thinking..."); // This is a temporary placeholder
+    setIsLoading(true); // Disable the ask button
 
     try {
       // Send the request to the server's endpoint
@@ -47,6 +49,8 @@ function App() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // Re-enable the ask button
     }
   };
 
@@ -77,7 +81,11 @@ function App() {
                             ></input>
                           </div>
                           <div className="control">
-                            <button className="button is-primary" type="submit">
+                            <button
+                              className="button is-primary"
+                              type="submit"
+                              disabled={isLoading}
+                            >
                               Ask
                             </button>
                           </div>
