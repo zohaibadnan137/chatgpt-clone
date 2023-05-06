@@ -1,5 +1,11 @@
 # ChatGPT Clone 
-This is my attempt at a recruitment challenge for one of the companies that I've applied at. The main goal was to use server-sent events to create a question and answer interface that resembles ChatGPT.
+
+This is my attempt at a recruitment challenge for one of the companies that I've applied at. The main goal was to use server-sent events to create a question and answer interface that resembles ChatGPT. You can ask it the following questions:
+- What's the core idea of SICP in 150 words?
+- Why did Terry Davis go mad?
+- What did John Carmack achieve at ID Software?
+- What were the last words of Captain Ahab in Moby Dick?
+- Do you think K's inability to find The Castle is a mirroring of man's inability to find answers to the most important questions in his life?
 
 https://user-images.githubusercontent.com/82387424/236318274-32f2541a-531e-48d9-96ea-193832c627b6.mp4
 
